@@ -16,22 +16,10 @@ val App = functionalComponent<RProps> { _ ->
     }
 
     h1 {
-        +"Full-Stack Shopping List"
+        +"Log In RPC Users"
     }
-    ul {
-        shoppingList.sortedByDescending(ShoppingListItem::priority).forEach { item ->
-            li {
-                key = item.toString()
-                +"[${item.priority}] ${item.desc} "
-            }
-            attrs.onClickFunction = {
-                scope.launch {
-                    deleteShoppingListItem(item)
-                    setShoppingList(getShoppingList())
-                }
-            }
-        }
-
+    h2{
+        +"Welcome to RPC. Please Log-In"
     }
     child(
         InputComponent,
