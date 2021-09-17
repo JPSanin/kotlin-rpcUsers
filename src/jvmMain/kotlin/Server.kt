@@ -8,10 +8,7 @@ import io.ktor.routing.*
 import io.ktor.serialization.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
-import org.litote.kmongo.*
-import org.litote.kmongo.coroutine.*
-import org.litote.kmongo.reactivestreams.KMongo
-import com.mongodb.ConnectionString
+
 
 val shoppingList = mutableListOf(
     ShoppingListItem("Cucumbers 🥒", 1),
@@ -55,6 +52,20 @@ fun main() {
                     ContentType.Text.Html
                 )
             }
+            get("/users") {
+                call.respondText(
+                    this::class.java.classLoader.getResource("listUsers.html")!!.readText(),
+                    ContentType.Text.Html
+                )
+            }
+
+            get("/create") {
+                call.respondText(
+                    this::class.java.classLoader.getResource("create.html")!!.readText(),
+                    ContentType.Text.Html
+                )
+            }
+
             static("/") {
                 resources("")
             }
