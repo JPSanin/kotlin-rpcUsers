@@ -8,12 +8,18 @@ import io.ktor.routing.*
 import io.ktor.serialization.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
+import org.litote.kmongo.json
 
 
 val shoppingList = mutableListOf(
     ShoppingListItem("Cucumbers 🥒", 1),
     ShoppingListItem("Tomatoes 🍅", 2),
     ShoppingListItem("Orange Juice 🍊", 3)
+)
+
+val usersList = mutableListOf(
+    User("Juan Camilo", "Zorrilla", "juanmiloz", "juan","juan", "13/03/2002"),
+    User("Juan Pablo", "Sanin", "jpSanin", "jpxsanin","jpxsanin", "24/05/2000")
 )
 
 
@@ -32,20 +38,7 @@ fun main() {
             gzip()
         }
         routing {
-            route(ShoppingListItem.path) {
-                get {
-                    call.respond(shoppingList)
-                }
-                post {
-                    shoppingList += call.receive<ShoppingListItem>()
-                    call.respond(HttpStatusCode.OK)
-                }
-                delete("/{id}") {
-                    val id = call.parameters["id"]?.toInt() ?: error("Invalid delete request")
-                    shoppingList.removeIf { it.id == id }
-                    call.respond(HttpStatusCode.OK)
-                }
-            }
+
             get("/") {
                 call.respondText(
                     this::class.java.classLoader.getResource("index.html")!!.readText(),
@@ -57,6 +50,47 @@ fun main() {
                     this::class.java.classLoader.getResource("listUsers.html")!!.readText(),
                     ContentType.Text.Html
                 )
+            }
+
+
+            post("/"){
+
+                val parameters = call.receiveParameters();
+                val username: String = parameters["Username"].toString();
+                val password: String = parameters["Password"].toString();
+                var existAccount:Boolean = false
+                println("Username: "+username);
+                println("Password: "+password);
+
+                if(username!=null && password !=null){
+                    for(item in usersList){
+                        if(item.username == username && item.password == password) {
+                            existAccount = true
+                            call.respondText(
+                                this::class.java.classLoader.getResource("listUsers.html")!!.readText(),
+                                ContentType.Text.Html
+                            )
+
+                        }
+                    }
+                    if(!existAccount){
+                        println("El usuario o la contraseña son incorrectos")
+                        call.respondText(
+                            this::class.java.classLoader.getResource("index.html")!!.readText(),
+                            ContentType.Text.Html
+                        )
+                    }
+                }else{
+                   println("No pueden existir campos vacios")
+                  call.respondText(
+                        this::class.java.classLoader.getResource("index.html")!!.readText(),
+                        ContentType.Text.Html
+                    )
+                }
+
+
+
+
             }
 
             get("/create") {
