@@ -1,3 +1,4 @@
+import com.sun.deploy.net.proxy.AutoProxyScript
 import io.ktor.application.*
 import io.ktor.features.*
 import io.ktor.http.*
@@ -59,10 +60,12 @@ fun main() {
                 val username: String = parameters["Username"].toString();
                 val password: String = parameters["Password"].toString();
                 var existAccount:Boolean = false
+                var message:String
+
                 println("Username: "+username);
                 println("Password: "+password);
 
-                if(username!=null && password !=null){
+                if(!username.equals("") && !password.equals("")){
                     for(item in usersList){
                         if(item.username == username && item.password == password) {
                             existAccount = true
@@ -81,8 +84,8 @@ fun main() {
                         )
                     }
                 }else{
-                   println("No pueden existir campos vacios")
-                  call.respondText(
+                    println("No pueden existir campos vacios")
+                    call.respondText(
                         this::class.java.classLoader.getResource("index.html")!!.readText(),
                         ContentType.Text.Html
                     )
