@@ -1,4 +1,4 @@
-import com.sun.deploy.net.proxy.AutoProxyScript
+
 import io.ktor.application.*
 import io.ktor.features.*
 import io.ktor.http.*
@@ -69,6 +69,7 @@ fun main() {
                     for(item in usersList){
                         if(item.username == username && item.password == password) {
                             existAccount = true
+                            call.respond(usersList)
                             call.respondText(
                                 this::class.java.classLoader.getResource("listUsers.html")!!.readText(),
                                 ContentType.Text.Html

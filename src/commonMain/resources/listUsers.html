@@ -34,24 +34,26 @@
         <th></th>
     </tr>
     </thead>
-    <tbody>
-
-    <tr>
-        <td>
-
-        </td>
-        <td>
-
-        </td>
-        <td>
-
-        </td>
-        <td>
-
-        </td>
-    </tr>
-
-    </tbody>
+    <tbody id="tBody"></tbody>
 </table>
+<script>
+
+    function loadTableData(items) {
+        const table = document.getElementById("tBody");
+        items.forEach( item => {
+            let row = table.insertRow();
+            let username = row.insertCell(0);
+            username.innerHTML = item.username;
+            let firstName = row.insertCell(1);
+            firstName.innerHTML = item.firstName;
+            let lastName = row.insertCell(2);
+            lastName.innerHTML = item.lastName;
+            let birthdate = row.insertCell(3);
+            birthdate.innerHTML = item.birthdate;
+        });
+    }
+    loadTableData(usersList);
+
+</script>
 </body>
 </html>
